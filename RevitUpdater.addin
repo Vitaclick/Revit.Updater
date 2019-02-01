@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Text>Command RevitUpdater</Text>
+    <Description>Some description for RevitUpdater</Description>
+    <Assembly>RevitUpdater.dll</Assembly>
+    <FullClassName>RevitUpdater.Updater</FullClassName>
+    <ClientId>b8cdaf1f-f1bf-4f5a-9598-ec8264b9d7ea</ClientId>
+    <VendorId>com.typepad.thebuildingcoder</VendorId>
+    <VendorDescription>The Building Coder, http://thebuildingcoder.typepad.com</VendorDescription>
+  </AddIn>
+  <AddIn Type="Application">
+    <Name>Application RevitUpdater</Name>
+    <Assembly>RevitUpdater.dll</Assembly>
+    <FullClassName>RevitUpdater.AppEvents</FullClassName>
+    <ClientId>9209b9f8-b025-4d66-bc49-e030530cb751</ClientId>
+    <VendorId>com.typepad.thebuildingcoder</VendorId>
+    <VendorDescription>The Building Coder, http://thebuildingcoder.typepad.com</VendorDescription>
+  </AddIn>
+</RevitAddIns>
