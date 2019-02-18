@@ -36,10 +36,10 @@ namespace RevitUpdater
       try
       {
         // register events
-        a.ControlledApplication.ProgressChanged += app_ClosingLinks;
-        a.ControlledApplication.DocumentOpening += app_DocumentOpening;
-        a.DialogBoxShowing += new EventHandler<Autodesk.Revit.UI.Events.DialogBoxShowingEventArgs>(AppDialogShowing);
-//        a.ControlledApplication.FailuresProcessing += new EventHandler<FailuresProcessingEventArgs>(OnFailuresProcessing);
+//        a.ControlledApplication.ProgressChanged += app_ClosingLinks;
+//        a.ControlledApplication.DocumentOpening += app_DocumentOpening;
+//        a.DialogBoxShowing += new EventHandler<Autodesk.Revit.UI.Events.DialogBoxShowingEventArgs>(AppDialogShowing);
+        a.ControlledApplication.FailuresProcessing += new EventHandler<FailuresProcessingEventArgs>(OnFailuresProcessing);
 //        a.ControlledApplication.FailuresProcessing += new EventHandler<FailuresProcessingEventArgs>(CheckWarnings);
       }
       catch (Exception) { return Result.Failed;}
@@ -49,10 +49,10 @@ namespace RevitUpdater
     
     public Result OnShutdown(UIControlledApplication a)
     {
-      a.ControlledApplication.ProgressChanged -= app_ClosingLinks;
-      a.ControlledApplication.DocumentOpening -= app_DocumentOpening;
-      a.DialogBoxShowing -= new EventHandler<Autodesk.Revit.UI.Events.DialogBoxShowingEventArgs>(AppDialogShowing);
-//      a.ControlledApplication.FailuresProcessing -= new EventHandler<FailuresProcessingEventArgs>(OnFailuresProcessing);
+//      a.ControlledApplication.ProgressChanged -= app_ClosingLinks;
+//      a.ControlledApplication.DocumentOpening -= app_DocumentOpening;
+//      a.DialogBoxShowing -= new EventHandler<Autodesk.Revit.UI.Events.DialogBoxShowingEventArgs>(AppDialogShowing);
+      a.ControlledApplication.FailuresProcessing -= new EventHandler<FailuresProcessingEventArgs>(OnFailuresProcessing);
 //      a.ControlledApplication.FailuresProcessing -= new EventHandler<FailuresProcessingEventArgs>(CheckWarnings);
       return Result.Succeeded;
     }
@@ -137,17 +137,17 @@ namespace RevitUpdater
 //      }
     }
 
-//    private void OnFailuresProcessing(object sender, FailuresProcessingEventArgs e)
-//    {
-//      FailuresAccessor failuresAccessor = e.GetFailuresAccessor();
-//      IEnumerable<FailureMessageAccessor> failureMessages = failuresAccessor.GetFailureMessages();
-//      foreach (FailureMessageAccessor failureMessage in failureMessages) {
-//        if (failureMessage.GetSeverity() == FailureSeverity.Warning) {
-//          failuresAccessor.DeleteWarning(failureMessage);
-//        }
-//      }
-//      e.SetProcessingResult(FailureProcessingResult.Continue);
-//    }
+    private void OnFailuresProcessing(object sender, FailuresProcessingEventArgs e)
+    {
+      FailuresAccessor failuresAccessor = e.GetFailuresAccessor();
+      IEnumerable<FailureMessageAccessor> failureMessages = failuresAccessor.GetFailureMessages();
+      foreach (FailureMessageAccessor failureMessage in failureMessages) {
+        if (failureMessage.GetSeverity() == FailureSeverity.Warning) {
+          failuresAccessor.DeleteWarning(failureMessage);
+        }
+      }
+      e.SetProcessingResult(FailureProcessingResult.Continue);
+    }
 
     private void app_DocumentOpening(object sender, DocumentOpeningEventArgs e)
     {
