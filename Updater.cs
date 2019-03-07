@@ -42,9 +42,7 @@ namespace RevitUpdater
       }
 
       Globals.data.Add(temp);
-
     }
-
 
 //    public void app_ClosingLinks(object sender, ProgressChangedEventArgs e)
 //    {
