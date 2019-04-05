@@ -12,7 +12,6 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Events;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using ProgressChangedEventArgs = Autodesk.Revit.DB.Events.ProgressChangedEventArgs;
 using TaskDialog = Autodesk.Revit.UI.TaskDialog;
 using TaskDialogResult = Autodesk.Revit.UI.TaskDialogResult;
@@ -36,9 +35,9 @@ namespace RevitUpdater
       try
       {
         // register events
-//        a.ControlledApplication.ProgressChanged += app_ClosingLinks;
-//        a.ControlledApplication.DocumentOpening += app_DocumentOpening;
-//        a.DialogBoxShowing += new EventHandler<Autodesk.Revit.UI.Events.DialogBoxShowingEventArgs>(AppDialogShowing);
+        a.ControlledApplication.ProgressChanged += app_ClosingLinks;
+        a.ControlledApplication.DocumentOpening += app_DocumentOpening;
+        a.DialogBoxShowing += new EventHandler<Autodesk.Revit.UI.Events.DialogBoxShowingEventArgs>(AppDialogShowing);
         a.ControlledApplication.FailuresProcessing += new EventHandler<FailuresProcessingEventArgs>(OnFailuresProcessing);
 //        a.ControlledApplication.FailuresProcessing += new EventHandler<FailuresProcessingEventArgs>(CheckWarnings);
       }
@@ -49,9 +48,9 @@ namespace RevitUpdater
     
     public Result OnShutdown(UIControlledApplication a)
     {
-//      a.ControlledApplication.ProgressChanged -= app_ClosingLinks;
+      a.ControlledApplication.ProgressChanged -= app_ClosingLinks;
 //      a.ControlledApplication.DocumentOpening -= app_DocumentOpening;
-//      a.DialogBoxShowing -= new EventHandler<Autodesk.Revit.UI.Events.DialogBoxShowingEventArgs>(AppDialogShowing);
+      a.DialogBoxShowing -= new EventHandler<Autodesk.Revit.UI.Events.DialogBoxShowingEventArgs>(AppDialogShowing);
       a.ControlledApplication.FailuresProcessing -= new EventHandler<FailuresProcessingEventArgs>(OnFailuresProcessing);
 //      a.ControlledApplication.FailuresProcessing -= new EventHandler<FailuresProcessingEventArgs>(CheckWarnings);
       return Result.Succeeded;
@@ -194,19 +193,19 @@ namespace RevitUpdater
         // get document from event args
 //        if (openingLinksNames.Any(file => e.Caption.Contains(file)))
         var state = e.Caption;
-
-        var file = Regex.Match(state, @"Загрузка \d\d\d\d|Loading \d\d\d\d");
-
-        if (file.Length > 0)
+        if ( (state.StartsWith("Loading") || state.StartsWith("Загрузка")) && !state.Contains(Globals.data) )
         {
-          if ( !state.Contains(Globals.data))
-          {
-            if (e.Cancellable)
-            {
-              Debug.Write(state);
-              e.Cancel();
-            }
-          }
+//          if (file.Length > 0)
+//          {
+//            if (!state.Contains(Globals.data))
+//            {
+              if (e.Cancellable)
+              {
+                Debug.Write(state);
+                e.Cancel();
+              }
+//            }
+//          }
         }
       }
     }
